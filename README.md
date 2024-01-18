@@ -5,15 +5,15 @@ Wikipedia Graph Project
 
 
 Programmiert wird ein kleines Python Tool, welches folgende Anforderungen erfüllt:
-a)	Der Benutzer kann einen Wikipedia-Artikel eingeben (im Code)
+a)	Der Benutzer kann einen Wikipedia-Artikel eingeben (im Code) ✅
 
-b)	Das Tool sucht nach der verlinkten Artikel dieses Artikels 
+b)	Das Tool sucht nach den verlinkten Artikel dieses Artikels ✅
 
 c)	Man kann im Code festlegen, wie gross der Graph sein soll – d.h. wie viele «hops» Distanz
 
 d)	Die Verwebungen der gefundenen Artikel untereinander werden dabei auch angezeigt
 
-e)	Graphische Darstellung dieses Graphen
+e)	Graphische Darstellung dieses Graphen 
 
 f)	Begrenzung in der Anzahl verlinkter Artikel
 
