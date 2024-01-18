@@ -1,12 +1,13 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-
+from main import linked_articles
+from main import article_title
 G = nx.Graph()
 
-central_topic = "Python Programming"
+central_topic = article_title
 G.add_node(central_topic)
 
-related_topics = ["Data Structures", "Algorithms", "Object-Oriented Programming", "Functional Programming", "Libraries"]
+related_topics = linked_articles
 G.add_nodes_from(related_topics)
 
 G.add_edges_from([(central_topic, topic) for topic in related_topics])

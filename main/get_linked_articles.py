@@ -22,6 +22,6 @@ def get_linked_articles(article_title):
     return linked_articles
 
 #Example usage
-article_title = "Python (programming language)"
+article_title = "Samsung"
 linked_articles = get_linked_articles(article_title)
 print("Linked Articles:", linked_articles)
