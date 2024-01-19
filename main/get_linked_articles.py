@@ -1,5 +1,7 @@
 import requests
 
+
+
 def get_linked_articles(article_title):
     base_url = "https://en.wikipedia.org/w/api.php" #url for the api
     params = { # define parameters in api request
@@ -21,7 +23,10 @@ def get_linked_articles(article_title):
 
     return linked_articles
 
+
 #Example usage
-article_title = "Samsung"
+article_title = "Python"
 linked_articles = get_linked_articles(article_title)
 print("Linked Articles:", linked_articles)
+
+
