@@ -65,6 +65,7 @@ print("Linked Articles:", linked_articles)
 """
 
 
+"""
 
 import requests
 
@@ -113,6 +114,7 @@ def get_linked_articles(article_title):
     relevance = {}
     link_titles = []
     for article in linked_articles:
+        print("Testing new articles")
         params['titles']=article # updating the parameters to the current article 
         relevance_number=0
         link_titles=[]
@@ -143,4 +145,112 @@ top_30_articles = get_linked_articles(article_title)
 print("Top 30 Linked Articles:", top_30_articles)
 
 
+"""
 
+import requests
+
+def get_important_links(article_title):
+    global important_links
+    important_links = []
+    linked_articles = get_linked_articles(article_title)
+    backlinks = get_backlinks(article_title)
+
+    for element in linked_articles:
+        if element in backlinks:
+            important_links.append(element)
+        
+    return important_links
+
+
+def get_linked_articles(article_title):
+    base_url = "https://en.wikipedia.org/w/api.php" #url for the api
+    params = { # define parameters in api request
+        'action': 'query', # query action, so retrieving information
+        'titles': article_title, # information that is request
+        'prop': 'links', # property of the page to retrieve information from
+        'format': 'json', # response format
+        'pllimit': 500, # set limit of returned links to maximum (500)
+        'plgenerator': 'allpages',
+        'gaplimit': 500,
+    }
+
+    
+    global linked_articles
+    global backlinks
+    linked_articles = []
+    backlinks = []
+
+    response = requests.get(base_url, params=params)  # get request
+    data = response.json()
+
+    while True:
+        response = requests.get(base_url, params=params) # get request
+        data = response.json()
+
+        # Extract linked articles
+        pages = data['query']['pages'] # accesses values associated to key "query" and then key "pages"
+        for page_id in pages:
+            page = pages[page_id] # get individual page object
+            links = page.get('links', []) # if "links" key is present it returns value associated with it, otherwise the second parameter (empty list)
+            linked_articles.extend(link['title'] for link in links) # extend list with titels of the links
+
+       # Check if there are more results
+        continue_param = data.get('continue', {}) # retrieves  "continue" parameter from "data" dictoinary (if doesn't exits returns empty dictionary)
+        print(continue_param)
+        if not continue_param: # checks if contine_param is an empty list
+            break
+
+        # Update the params with the continue parameter
+        params.update(continue_param)
+
+        """
+        Explanation of the "continue" key:
+
+        This "continue" key and its value are typically 
+        provided by an API to enable the client 
+        to go through a large dataset in chunks.
+        The value of the "continue" key is a token 
+        that the client can use in a subsequent 
+        request to retrieve the next chunk of items.
+        The code checks if the continue parameter is 
+        empty to determine if there are any more results 
+        to retrieve.
+
+        """
+
+    filtered_links = [string for string in linked_articles if ':' not in string and "/" not in string]
+    return filtered_links
+
+def get_backlinks(title):
+    base_url = "https://en.wikipedia.org/w/api.php"
+    params = {
+        'action': 'query',
+        'format': 'json',
+        'list': 'backlinks', 
+        'bllimit': 500,  # Maximum number of backlinks 
+        'bltitle': title, #  Title of the page to get backlinks from
+    }
+
+    response = requests.get(base_url, params=params) # get request
+    data = response.json()
+    print(data)
+
+    # Extract linked articles
+    backlinks = data['query']['backlinks'] # accesses values associated to key "query" and then key "backlinks"
+
+    """
+    code so titles with a ":" or "/" in them get ruled out, 
+    because those are not articles but rather user talks, requests or collections of articles
+    """
+    filtered_backlinks = [page['title'] for page in backlinks if ':' not in page['title'] and '/' not in page['title']]
+    return filtered_backlinks
+
+"""
+#Example usage
+article_title = "Sursee"
+linked_articles = get_linked_articles(article_title)
+backlinks = get_backlinks(article_title)
+print("Linked Articles: \n\n", linked_articles)
+print("Backlinks: \n\n", backlinks)
+print("\n\n\n\n Those are the important links: ", important_links)
+"""

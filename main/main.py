@@ -5,7 +5,7 @@ from customtkinter import *
 import requests
 import subprocess
 import json
-from get_linked_articles import get_linked_articles
+from get_linked_articles import get_important_links
 
 # Add these lines at the beginning of your script
 sys.stdout = codecs.getwriter('utf8')(sys.stdout.detach())
@@ -21,7 +21,7 @@ def search_btn_clicked():
     global article_to_be_searched
     article_title = entry.get()
     article_to_be_searched = article_title
-    linked_articles = get_linked_articles(article_title)
+    linked_articles = get_important_links(article_title)
     save_articles_to_file()
     file_name_gui = "gui.py" #probably have to add a \main here at the front, depends on the path
     subprocess.Popen([sys.executable, file_name_gui])
