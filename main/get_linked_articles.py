@@ -72,19 +72,20 @@ def get_linked_articles(article_title):
     filtered_links = [string for string in linked_articles if ':' not in string and "/" not in string]
     return filtered_links
 
-def get_backlinks(title):
+def get_backlinks(article_title):
+    print("I get called though?")
     base_url = "https://en.wikipedia.org/w/api.php"
     params = {
         'action': 'query',
         'format': 'json',
         'list': 'backlinks', 
         'bllimit': 500,  # Maximum number of backlinks 
-        'bltitle': title, #  Title of the page to get backlinks from
+        'bltitle': article_title, #  Title of the page to get backlinks from
     }
 
     response = requests.get(base_url, params=params) # get request
     data = response.json()
-    print(data)
+    #print(data)
 
     # Extract linked articles
     backlinks = data['query']['backlinks'] # accesses values associated to key "query" and then key "backlinks"
@@ -94,7 +95,35 @@ def get_backlinks(title):
     because those are not articles but rather user talks, requests or collections of articles
     """
     filtered_backlinks = [page['title'] for page in backlinks if ':' not in page['title'] and '/' not in page['title']]
-    return filtered_backlinks
+
+    print("I mean we do get here right?")
+    print("\n\n\n\n\n\n those are the filtered backlinks, ",filtered_backlinks,"\n\n\n\n\n")
+    # Calculate the relevance of each linked article
+    relevance = {}
+    link_titles = []
+    for backlink_article in filtered_backlinks:
+        relevance_number=0
+        print("This article is currently checked, ", backlink_article)
+        link_titles.append(get_linked_articles(backlink_article))
+        #print("Those are the links of the article, ", link_titles)
+        for page in link_titles:
+            #page = pages[page_id] # get individual page object
+            #links = page.get('links', []) # if "links" key is present it returns value associated with it, otherwise the second parameter (empty list)
+            #link_titles.extend(link['title'] for link in links)
+            #for link in link_titles:
+            if page == article_title:
+                relevance_number = relevance_number+1
+        relevance[backlink_article]=relevance_number
+
+    print("This is the relevance: ", relevance)
+
+    # Sort linked articles by relevance and retrieve the top 30
+    sorted_articles = sorted(relevance.items(), key=lambda x: x[1], reverse=True)
+    top_30_articles = [article[0] for article in sorted_articles[:30]]
+
+
+
+    return top_30_articles
 
 """
 #Example usage

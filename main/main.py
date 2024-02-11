@@ -21,6 +21,7 @@ def search_btn_clicked():
     global article_to_be_searched
     article_title = entry.get()
     article_to_be_searched = article_title
+    print("hello?")
     linked_articles = get_important_links(article_title)
     save_articles_to_file()
     file_name_gui = "gui.py" #probably have to add a \main here at the front, depends on the path
