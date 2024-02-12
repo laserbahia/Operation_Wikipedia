@@ -26,12 +26,13 @@ def get_important_links(article_title):
     print("Updated linked articles: \n\n\n\n",fresh_linked_articles)
 
     for element in fresh_linked_articles:
+        print(element)
         if element in backlinks:
             important_links.append(element)
     
     print("Those are the important_links: \n\n\n\n", important_links)
     
-    if len(important_links) >=30:
+    if len(important_links) >=15:
         relevance = count_word_occurrences(important_links, article_title)
         print("This is the relevance:", relevance)
     else:
