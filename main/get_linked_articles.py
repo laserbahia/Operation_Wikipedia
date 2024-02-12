@@ -1,16 +1,27 @@
-
 import requests
+from bs4 import BeautifulSoup
+import re
 
 
 def get_important_links(article_title):
+    print("stage 1")
     global important_links
     important_links = []
     linked_articles = get_linked_articles(article_title)
+    print("stage 2")
     backlinks = get_backlinks(article_title)
+
+    print("So i geht here?")
+
+    for element in linked_articles:
+        if element in get_all_navbox_titles(article_title):
+            print("This element was found:", element)
+            linked_articles.remove(element)
 
     for element in linked_articles:
         if element in backlinks:
             important_links.append(element)
+    
 
     """
     # Calculate the relevance of each linked article
@@ -77,6 +88,7 @@ def get_linked_articles(article_title):
     while True:
         response = requests.get(base_url, params=params) # get request
         data = response.json()
+        response.raise_for_status()
 
         # Extract linked articles
         pages = data['query']['pages'] # accesses values associated to key "query" and then key "pages"
@@ -115,6 +127,7 @@ def get_linked_articles(article_title):
     return filtered_links
 
 def get_backlinks(title):
+    print("Hallllllöle")
     base_url = "https://en.wikipedia.org/w/api.php"
     params = {
         'action': 'query',
@@ -138,6 +151,7 @@ def get_backlinks(title):
     filtered_backlinks = [page['title'] for page in backlinks if ':' not in page['title'] and '/' not in page['title']]
 
     #print("\n\n\nfiltered backlinks:", filtered_backlinks)
+    print("Ich komme also nicht bis hier?")
     return filtered_backlinks
     
 def count_word_occurrences(articles, target_word):
@@ -171,6 +185,90 @@ def get_article_text(article_title):
 
     #print("\n\n\narticle text:", article_text)
     return article_text
+
+def get_all_navbox_titles(article_title):
+    print("I got called haha")
+    # Fetch the Wikipedia article content
+    url = f"https://en.wikipedia.org/wiki/{article_title}"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    # Find all navbox sections (adjust based on Wikipedia article structure)
+    navboxes = soup.find_all("div", {"class": "navbox"})
+
+    # Extract article titles from all navboxes
+    titles = []
+    for navbox in navboxes:
+        for link in navbox.find_all("a", href=re.compile(r"/wiki/")):
+            title = link.get("title")
+            if title:
+                titles.append(title)
+
+    return titles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 """
 #Example usage
