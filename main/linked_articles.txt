@@ -1,77 +1,30 @@
-Aarau
-Aare
-Aargau
-Albania
-Albert Einstein
-Alphorn
-Alps
-Andorra
-Azerbaijan
-Basel
-Belarus
-Belgium
-Benin
-Bosnia and Herzegovina
-Bulgaria
-Burkina Faso
-Central African Republic
-Chad
-Comoros
-Council of Europe
-Croatia
-Cyprus
-Czech Republic
-Czechoslovakia
-Equatorial Guinea
-Europe
-European Free Trade Association
-European Space Agency
-European Union
-FIFA
-Federalism
-Finland
-French language
-Gabon
-Geneva
-German language
-Germany
-Greece
-Guernsey
-Guinea
-Guinea-Bissau
-Haiti
-Helvetii
-Holy See
-Huldrych Zwingli
-Hungary
-Hydropower
-ISO 4217
-Ice hockey
-Iceland
-International Labour Organization
-International Monetary Fund
-International Olympic Committee
-International Telecommunication Union
-Isle of Man
-Italian language
-Italy
-Jean-Jacques Rousseau
-Jersey
-Kazakhstan
-Kosovo
-Kyoto Protocol
-La Tène culture
-Laos
-Latvia
-Lausanne
-Liechtenstein
-Lithuania
-Louis Agassiz
-Louisiana
-Luxembourg
-Mali
-Malta
-Martina Hingis
-Mauritius
-Mediterranean Sea
-Republic of Ireland
+Beach volleyball
+Holyoke, Massachusetts
+1964 Summer Olympics
+National Collegiate Athletic Association
+Brazil
+Eton fives
+Knuckleball
+Olympic Games
+YMCA
+Airsoft
+Archery
+Artistic gymnastics
+Association football
+Australian rules football
+Badminton
+Bandy
+Baseball
+Basketball
+Box lacrosse
+Boxing
+Buzkashi
+Camogie
+Canadian football
+Chennai
+Curling
+Diving (sport)
+Dodgeball
+Dressage
+Equestrianism
+Eventing
