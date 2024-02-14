@@ -3,39 +3,36 @@ from bs4 import BeautifulSoup
 import re
 
 
-def get_important_links(article_title):
+def get_important_links(article_title,hopping_distance,currently_hopping):
     global important_links
     important_links = []
     linked_articles = get_linked_articles(article_title)
     backlinks = get_backlinks(article_title)
     navbox_titles = get_all_navbox_titles(article_title)
 
-    print(linked_articles)
+    #print(linked_articles)
 
     fresh_linked_articles = []
-
 
     for element in linked_articles:
         if element not in navbox_titles:
             fresh_linked_articles.append(element)
-            
 
 
-  
-
-    print("Updated linked articles: \n\n\n\n",fresh_linked_articles)
+    #print("Updated linked articles: \n\n\n\n",fresh_linked_articles)
 
     for element in fresh_linked_articles:
-        print(element)
+        #print(element)
         if element in backlinks:
             important_links.append(element)
     
-    print("Those are the important_links: \n\n\n\n", important_links)
+    #print("Those are the important_links: \n\n\n\n", important_links)
     
-    if len(important_links) >=15:
+    if len(important_links) >=15 or currently_hopping == True:
         relevance = count_word_occurrences(important_links, article_title)
-        print("This is the relevance:", relevance)
+        #print("This is the relevance:", relevance)
     else:
+        print("THIIIIIIS SHOULD NOT APPEAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         relevance = {}
         for important_article in fresh_linked_articles:
             relevance_number=0
@@ -47,7 +44,7 @@ def get_important_links(article_title):
                 if page == article_title:
                     relevance_number = relevance_number+1
             relevance[important_article]=relevance_number
-        print("This is the relevance: ", relevance)
+        #print("This is the relevance: ", relevance)
     # Sort linked articles by relevance and retrieve the top 30
     #sorted_articles = sorted(relevance.items(), key=lambda x: x[1], reverse=True)
     #top_30_articles = [article[0] for article in sorted_articles[:30]]
@@ -61,7 +58,15 @@ def get_important_links(article_title):
     # If you want only the words without their associated numbers
     top_30_words_only = [word[0] for word in top_30_words]
 
-    print(top_30_words_only)
+    print("Those are the ones that should be searched", top_30_words_only)
+
+    if hopping_distance>0:
+        linksOfLinks = {}
+        for link in top_30_words_only:
+            print("Currenly Checking: ",link)
+            linksOfLinks[link]=get_important_links(link,hopping_distance-1,True)
+        hopping_distance=hopping_distance-1
+        print("Those are the linked articles of the linked articles:", linksOfLinks)
 
     return top_30_words_only
 
@@ -102,7 +107,7 @@ def get_linked_articles(article_title):
 
        # Check if there are more results
         continue_param = data.get('continue', {}) # retrieves  "continue" parameter from "data" dictoinary (if doesn't exits returns empty dictionary)
-        print(continue_param)
+        #print(continue_param)
         if not continue_param: # checks if contine_param is an empty list
             break
 
@@ -130,7 +135,6 @@ def get_linked_articles(article_title):
     return filtered_links
 
 def get_backlinks(article_title):
-    print("I get called though?")
     base_url = "https://en.wikipedia.org/w/api.php"
     params = {
         'action': 'query',
@@ -189,7 +193,7 @@ def get_article_text(article_title):
 
     except requests.exceptions.RequestException as e:
         return f"Error: {e}"
-
+    
 
 def get_all_navbox_titles(article_title):
     # Fetch the Wikipedia article content
@@ -293,18 +297,19 @@ print("Those are the important links:", important_links)
 
 #Test
 
-#article_title = "Sempach"
+article_title = "Switzerland"
 
 #linked_articles = get_linked_articles(article_title)
 #backlinks = get_backlinks(article_title)
 #article_text = get_article_text(article_title)
 #navbox_text = get_all_navbox_titles(article_title)
-#important_links = get_important_links(article_title)
+important_links = get_important_links(article_title,1,True)
 #print("Linked Articles: \n\n", linked_articles)
 #print("Backlinks: \n\n", backlinks)
 #print("Article text: \n\n", article_text)
 #print("NavboxText:, \n\n ",navbox_text)
-#print("Important, \n\n", important_links)
+print("Important, \n\n", important_links)
+
 
 
 
