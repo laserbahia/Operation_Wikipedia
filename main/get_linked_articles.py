@@ -1,11 +1,26 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+from collections import defaultdict
+
+global top_30_words_only_complete_dictionary
+global counter
+counter=0
+top_30_words_only_complete_dictionary = {}
+global links_in_links
+links_in_links={}
+global links_of_links
+links_of_links={}
+
 
 
 def get_important_links(article_title,hopping_distance,currently_hopping):
     global important_links
+    global counter
+    global links_in_links
+    global links_of_links
     important_links = []
+    global top_30_words_only_complete_dictionary
     linked_articles = get_linked_articles(article_title)
     backlinks = get_backlinks(article_title)
     navbox_titles = get_all_navbox_titles(article_title)
@@ -28,11 +43,10 @@ def get_important_links(article_title,hopping_distance,currently_hopping):
     
     #print("Those are the important_links: \n\n\n\n", important_links)
     
-    if len(important_links) >=15 or currently_hopping == True:
+    if len(important_links) >=10 or currently_hopping == True:
         relevance = count_word_occurrences(important_links, article_title)
         #print("This is the relevance:", relevance)
     else:
-        print("THIIIIIIS SHOULD NOT APPEAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         relevance = {}
         for important_article in fresh_linked_articles:
             relevance_number=0
@@ -53,22 +67,25 @@ def get_important_links(article_title,hopping_distance,currently_hopping):
     sorted_words = sorted(relevance.items(), key=lambda x: x[1], reverse=True)
 
     # Selecting the top 30 words
-    top_30_words = sorted_words[:30]
+    top_30_words = sorted_words[:2]
 
-    # If you want only the words without their associated numbers
+    # Only the words without their associated numbers
     top_30_words_only = [word[0] for word in top_30_words]
 
+
     print("Those are the ones that should be searched", top_30_words_only)
+    top_30_words_only_complete_dictionary[article_title]=top_30_words_only
 
     if hopping_distance>0:
-        linksOfLinks = {}
         for link in top_30_words_only:
             print("Currenly Checking: ",link)
-            linksOfLinks[link]=get_important_links(link,hopping_distance-1,True)
-        hopping_distance=hopping_distance-1
-        print("Those are the linked articles of the linked articles:", linksOfLinks)
+            links_of_links[link]=get_important_links(link,hopping_distance-1,True)
+        print("Those are the linked articles of the linked articles:", links_of_links)
 
-    return top_30_words_only
+    print("\n\n\n\n This is currently the dictionary: \n\n\n\n", top_30_words_only_complete_dictionary)
+    
+    print("Those are the links_in_links:", links_in_links)
+    return top_30_words_only,links_of_links
 
 
 
@@ -214,69 +231,21 @@ def get_all_navbox_titles(article_title):
 
     return titles
 
+def find_duplicate_values(data):
+    value_keys = {}  # Dictionary to store keys associated with each value
 
+    # Populate value_keys
+    for key, (values, _) in data.items():
+        for value in values:
+            if value in value_keys:
+                value_keys[value].append(key)
+            else:
+                value_keys[value] = [key]
 
+    # Filter out duplicates
+    duplicate_pairs = {value: keys for value, keys in value_keys.items() if len(keys) > 1}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return duplicate_pairs
 
 """
 #Example usage
@@ -297,20 +266,18 @@ print("Those are the important links:", important_links)
 
 #Test
 
-article_title = "Switzerland"
+article_title = "Sempach"
 
 #linked_articles = get_linked_articles(article_title)
 #backlinks = get_backlinks(article_title)
 #article_text = get_article_text(article_title)
 #navbox_text = get_all_navbox_titles(article_title)
-important_links = get_important_links(article_title,1,True)
+#linked_articles, links_of_linked_articles = get_important_links(article_title,2,True)
+#links_in_links = find_duplicate_values(links_of_linked_articles)
 #print("Linked Articles: \n\n", linked_articles)
 #print("Backlinks: \n\n", backlinks)
 #print("Article text: \n\n", article_text)
 #print("NavboxText:, \n\n ",navbox_text)
-print("Important, \n\n", important_links)
-
-
-
-
-
+#print("Important, \n\n", linked_articles)
+#print("Links of linked articles, \n\n",links_of_linked_articles)
+#print("Links in links: ",links_in_links)
