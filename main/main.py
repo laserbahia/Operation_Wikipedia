@@ -6,6 +6,7 @@ import requests
 import subprocess
 import json
 from get_linked_articles import get_important_links
+from get_linked_articles import find_duplicate_values
 
 # Add these lines at the beginning of your script
 sys.stdout = codecs.getwriter('utf8')(sys.stdout.detach())
@@ -22,7 +23,9 @@ def search_btn_clicked():
     article_title = entry.get()
     article_to_be_searched = article_title
     print("hello?")
-    linked_articles = get_important_links(article_title)
+    linked_articles, links_of_linked_articles = get_important_links(article_title,2,True) #function with multiple returns
+    links_in_links = find_duplicate_values(links_of_linked_articles)
+    print("Those are the links in links: ",links_in_links)
     save_articles_to_file()
     file_name_gui = "gui.py" #probably have to add a \main here at the front, depends on the path
     subprocess.Popen([sys.executable, file_name_gui])
