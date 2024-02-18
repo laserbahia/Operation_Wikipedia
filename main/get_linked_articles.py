@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-from collections import defaultdict
+from collections import defaultdict 
 
 global top_30_words_only_complete_dictionary
 global counter
@@ -67,7 +67,8 @@ def get_important_links(article_title,hopping_distance,currently_hopping):
     sorted_words = sorted(relevance.items(), key=lambda x: x[1], reverse=True)
 
     # Selecting the top 30 words
-    top_30_words = sorted_words[:2]
+    article_count = 2
+    top_30_words = sorted_words[:article_count]
 
     # Only the words without their associated numbers
     top_30_words_only = [word[0] for word in top_30_words]

@@ -30,7 +30,7 @@ def search_btn_clicked():
     links_in_links = find_duplicate_values(links_of_linked_articles)
     print("Those are the links in links: ",links_in_links)
     save_articles_to_file()
-    file_name_gui = "main/gui_v2.py" #probably have to add a \main here at the front, depends on the path
+    file_name_gui = "main/gui_v5.py" #probably have to add a \main here at the front, depends on the path
     subprocess.Popen([sys.executable, file_name_gui])
     root.destroy()
     print("Linked Articles:", linked_articles)
@@ -44,8 +44,12 @@ def save_articles_to_file():
         for linked_article in article_data["linked_articles"]:
             f2.write(f"{linked_article}\n")
 
-    with open("main/linked_linked_articles.pkl","wb") as f3:
-        pickle.dump(links_in_links, f3)  #reminder hoops get ignored here bc it just doesn't work 
+    with open("main/txt_files/linked_linked_articles.pkl","wb") as f3:
+        pickle.dump(links_of_linked_articles, f3)  #reminder hoops get ignored here bc it just doesn't work 
+        print("Links in links:", links_of_linked_articles)
+
+    with open("main/txt_files/linkes_in_links.pkl", "wb") as f4:
+        pickle.dump(links_in_links, f4)
 
 if __name__ == "__main__":
 #customtkinter window 
@@ -53,8 +57,10 @@ if __name__ == "__main__":
 
     entry = customtkinter.CTkEntry(root, placeholder_text="Which article do you wanna search?", width=225, height=15)  # define Entry for Article search
     entry.pack()
-
+    
     search_btn = CTkButton(root, text="search", command=search_btn_clicked)  # define search btn
     search_btn.pack()
+
+
 
     root.mainloop()
