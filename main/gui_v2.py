@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 G = nx.Graph()
 
 # Read the central topic from article_to_be_searched.txt
-with open("article_to_be_searched.txt", "r") as f1:
+with open("main/txt_files/article_to_be_searched.txt", "r") as f1:
     central_topic = f1.read().strip()
 
 # Read the related topics from linked_articles.txt and remove any empty lines
-with open("linked_articles.txt", "r") as f2:
+with open("main/txt_files/linked_articles.txt", "r") as f2:
     related_topics_raw = [line.strip() for line in f2]
     related_topics = [topic for topic in related_topics_raw if topic]
 
