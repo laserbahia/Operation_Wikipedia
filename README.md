@@ -11,7 +11,7 @@ b)	Das Tool sucht nach den verlinkten Artikel dieses Artikels ✅
 
 c)	Man kann im Code festlegen, wie gross der Graph sein soll – d.h. wie viele «hops» Distanz ✅
 
-d)	Die Verwebungen der gefundenen Artikel untereinander werden dabei auch angezeigt
+d)	Die Verwebungen der gefundenen Artikel untereinander werden dabei auch angezeigt ✅
 
 e)	Graphische Darstellung dieses Graphen ✅
 
@@ -19,9 +19,9 @@ f)	Begrenzung in der Anzahl verlinkter Artikel ✅
 
 Zusätzliche Funktionalitäten
 
-g)	Suchfeld für dynamische Suche nach neuen Artikeln (ohne es im Code anzupassen)
+g)	Suchfeld für dynamische Suche nach neuen Artikeln (ohne es im Code anzupassen) ✅
 
-h)	Verbunden Artikel wieder untereinander verbinden
+h)	Verbunden Artikel wieder untereinander verbinden ?
 
 i)	Speicherung als Bild (SVG?)
 
