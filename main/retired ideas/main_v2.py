@@ -58,7 +58,7 @@ if __name__ == "__main__":
     frame.pack()
     
     global my_image
-    my_image = customtkinter.CTkImage(light_image=Image.open("main\placeholder-image.png"),size=(1000, 800))
+    my_image = customtkinter.CTkImage(light_image=Image.open("main\retired ideas/placeholder-image.png"),size=(1000, 800))
     image_widget = customtkinter.CTkLabel(frame, text=None, image=my_image)
     image_widget.pack()
     

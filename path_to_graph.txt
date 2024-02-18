@@ -1,1 +1,0 @@
-main/graphs_folder/graph.png
