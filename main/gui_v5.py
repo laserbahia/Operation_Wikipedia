@@ -2,17 +2,20 @@ import pickle
 import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import numpy as np
+import math
+
 
 # Load all the necessary information from the files
-with open("main/txt_files/article_to_be_searched.txt", "r") as f1:  # Load central topic
+with open("txt_files/article_to_be_searched.txt", "r") as f1:  # Load central topic
     central_topic = f1.read().strip()
-with open("main/txt_files/linked_linked_articles.pkl", "rb") as f2:  # Load how to link the stuff
+with open("txt_files/linked_linked_articles.pkl", "rb") as f2:  # Load how to link the stuff
     links_of_linked_articles = pickle.load(f2)
     print(links_of_linked_articles)
-with open("main/txt_files/linked_articles.txt", "r") as f3:  # Read the related topics from linked_articles.txt and remove any empty lines
+with open("txt_files/linked_articles.txt", "r") as f3:  # Read the related topics from linked_articles.txt and remove any empty lines
     related_topics_raw = [line.strip() for line in f3]
     important = [topic for topic in related_topics_raw if topic]
-with open("main/txt_files/linkes_in_links.pkl","rb") as f4:
+with open("txt_files/linkes_in_links.pkl","rb") as f4:
     links_in_links=pickle.load(f4)
 
 # Create a directed graph
@@ -49,8 +52,24 @@ node_sizes = [5000 * inverted_path_lengths[node] for node in G.nodes]
 # Generate colors based on the inverted path lengths and colormap
 colors = [cmap(inverted_path_lengths[node]) for node in G.nodes]
 
-# Plot the graph
-pos = nx.spring_layout(G, k=2)
-nx.draw(G, pos, with_labels=True, node_size=node_sizes, node_color=colors, font_size=10, font_weight='bold')
+# Generate node positions
+pos = nx.spring_layout(G, scale=10)
+
+# Function to check and adjust node positions if necessary
+def adjust_node_positions(pos, tol=0.01):
+    adjusted_pos = pos.copy()
+    for node1, (x1, y1) in pos.items():
+        for node2, (x2, y2) in pos.items():
+            if node1 != node2 and abs(x1 - x2) < tol and abs(y1 - y2) < tol:
+                # Nodes have the same position, adjust one of the positions
+                adjusted_pos[node2] = (x2 + np.random.normal(0.5,0.5), y2 + np.random.normal(0.5, 0.5))
+    return adjusted_pos
+
+# Adjust node positions if necessary
+pos_adjusted = adjust_node_positions(pos)
+
+# Draw the graph with adjusted node positions
+plt.figure(figsize=(10, 8))
+nx.draw(G, pos_adjusted, with_labels=True, node_size=node_sizes, node_color=colors, font_size=10, font_weight='bold',)
 plt.title("Wikipedia Article Network")
 plt.show()
