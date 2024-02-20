@@ -29,7 +29,7 @@ def search_btn_clicked():
     print("hello?")
     linked_articles, links_of_linked_articles = get_important_links(article_title,2,True) #function with multiple returns
     links_in_links = find_duplicate_values(links_of_linked_articles)
-    print("Those are the links in links: ",links_in_links)
+    print("Those are the  finite links in links: ",links_in_links,"\n\n\n")
     save_articles_to_file()
     file_name_gui = "gui_v5.py" #probably have to add a \main here at the front, depends on the path
     subprocess.Popen([sys.executable, file_name_gui])

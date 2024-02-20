@@ -67,7 +67,7 @@ def get_important_links(article_title,hopping_distance,currently_hopping):
     sorted_words = sorted(relevance.items(), key=lambda x: x[1], reverse=True)
 
     # Selecting the top 30 words
-    article_count = 2
+    article_count = 3
     top_30_words = sorted_words[:article_count]
 
     # Only the words without their associated numbers
@@ -266,8 +266,12 @@ print("Those are the important links:", important_links)
 
 
 #Test
-
+"""
 article_title = "Sempach"
+important_links, links_in_links=get_important_links(article_title,2,True)
+print("Those are the important links:", important_links)
+print("Those are the finite links in links:",links_in_links)
+"""
 
 #linked_articles = get_linked_articles(article_title)
 #backlinks = get_backlinks(article_title)

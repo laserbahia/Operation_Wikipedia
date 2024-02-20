@@ -31,11 +31,14 @@ for source, (targets, _) in links_of_linked_articles.items():
         G.add_edge(source, target)
 
 # Add edges from the 'links_in_links'
-for source, targets in links_in_links.items():
-    for target in targets:
-        if target in links_of_linked_articles:  # Check if target is in links_of_linked_articles
-            for link_target in links_of_linked_articles[target][0]:
-                G.add_edge(target, link_target)
+for key in links_in_links:
+   values = links_in_links[key]
+   for i in range(len(values)):
+    for j in range(i+1, len(values)):  # Ensure not to repeat connections
+        node1 = values[i]
+        node2 = values[j]
+        print("Adding edge between: ",node1, node2)
+        G.add_edge(node1, node2)
 
 # Compute shortest path lengths from the main article
 path_lengths = nx.single_source_shortest_path_length(G, source=central_topic)
