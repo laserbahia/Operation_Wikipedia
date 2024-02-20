@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from collections import defaultdict 
+import sys
+import keyboard
 
 global top_30_words_only_complete_dictionary
 global counter
@@ -11,7 +13,6 @@ global links_in_links
 links_in_links={}
 global links_of_links
 links_of_links={}
-
 
 
 def get_important_links(article_title,hopping_distance,currently_hopping):

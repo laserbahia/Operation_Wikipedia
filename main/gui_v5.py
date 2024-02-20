@@ -5,7 +5,6 @@ import matplotlib.cm as cm
 import numpy as np
 import math
 
-
 # Load all the necessary information from the files
 with open("txt_files/article_to_be_searched.txt", "r") as f1:  # Load central topic
     central_topic = f1.read().strip()

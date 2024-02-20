@@ -8,6 +8,9 @@ import json
 from get_linked_articles import get_important_links
 from get_linked_articles import find_duplicate_values
 import pickle
+import keyboard
+import threading 
+
 
 
 # Add these lines at the beginning of your script
@@ -19,49 +22,87 @@ linked_articles = []
 
 #define functions
 
-def search_btn_clicked():
-    global linked_articles
-    global article_to_be_searched
-    global links_of_linked_articles
-    global links_in_links
-    article_title = entry.get()
-    article_to_be_searched = article_title
-    print("hello?")
-    linked_articles, links_of_linked_articles = get_important_links(article_title,2,True) #function with multiple returns
-    links_in_links = find_duplicate_values(links_of_linked_articles)
-    print("Those are the  finite links in links: ",links_in_links,"\n\n\n")
-    save_articles_to_file()
-    file_name_gui = "gui_v5.py" #probably have to add a \main here at the front, depends on the path
-    subprocess.Popen([sys.executable, file_name_gui])
-    root.destroy()
-    print("Linked Articles:", linked_articles)
+while True:
+    def search_btn_clicked():
+        global linked_articles
+        global article_to_be_searched
+        global links_of_linked_articles
+        global links_in_links
+        article_title = entry.get()
+        if article_title == "": #catch empty input
+            global window
+            window = CTk()  # create window 
+            window.update()  # Force GUI update
+            window.title("Error")
+            label = customtkinter.CTkLabel(window, text="Please type in a Wikipedia article")
+            label.pack(pady=10)
+            ok_button = customtkinter.CTkButton(window, text="OK", command=close_window)
+            ok_button.pack(pady=5)
+            return #get out of the function
 
 
-def save_articles_to_file():
-    print(links_of_linked_articles)
-    with open("txt_files/article_to_be_searched.txt", "w", encoding="utf8") as f1, open("txt_files/linked_articles.txt", "w", encoding="utf8") as f2:
-        article_data = {"article_to_be_searched": article_to_be_searched, "linked_articles": linked_articles}
-        f1.write(article_data["article_to_be_searched"])
-        for linked_article in article_data["linked_articles"]:
-            f2.write(f"{linked_article}\n")
+        article_to_be_searched = article_title
+        linked_articles, links_of_linked_articles = get_important_links(article_title,0,True) 
+        if linked_articles == [] : #check if list is empty to recognize false inputs
+            window = CTk()  # create window 
+            window.update()  # Force GUI update
+            window.title("Error")
+            label = customtkinter.CTkLabel(window, text="Article wasn't found, remember to use English")
+            label.pack(pady=10)
+            ok_button = customtkinter.CTkButton(window, text="OK", command=close_window)
+            ok_button.pack(pady=5)
+            return #get out of the function
+        links_in_links = find_duplicate_values(links_of_linked_articles)
+        print("Those are the  finite links in links: ",links_in_links,"\n\n\n")
+        save_articles_to_file()
+        file_name_gui = "gui_v5.py" #probably have to add a \main here at the front, depends on the path
+        subprocess.Popen([sys.executable, file_name_gui])
+        root.destroy()
 
-    with open("txt_files/linked_linked_articles.pkl","wb") as f3:
-        pickle.dump(links_of_linked_articles, f3)  #reminder hoops get ignored here bc it just doesn't work 
-        print("Links in links:", links_of_linked_articles)
-
-    with open("txt_files/linkes_in_links.pkl", "wb") as f4:
-        pickle.dump(links_in_links, f4)
-
-if __name__ == "__main__":
-#customtkinter window 
-    root = CTk()  # create window 
-
-    entry = customtkinter.CTkEntry(root, placeholder_text="Which article do you wanna search?", width=225, height=15)  # define Entry for Article search
-    entry.pack()
-    
-    search_btn = CTkButton(root, text="search", command=search_btn_clicked)  # define search btn
-    search_btn.pack()
+    def close_window():
+        window.destroy()
 
 
+    def save_articles_to_file():
+        print(links_of_linked_articles)
+        with open("txt_files/article_to_be_searched.txt", "w", encoding="utf8") as f1, open("txt_files/linked_articles.txt", "w", encoding="utf8") as f2:
+            article_data = {"article_to_be_searched": article_to_be_searched, "linked_articles": linked_articles}
+            f1.write(article_data["article_to_be_searched"])
+            for linked_article in article_data["linked_articles"]:
+                f2.write(f"{linked_article}\n")
 
-    root.mainloop()
+        with open("txt_files/linked_linked_articles.pkl","wb") as f3:
+            pickle.dump(links_of_linked_articles, f3)  #reminder hoops get ignored here bc it just doesn't work 
+            print("Links in links:", links_of_linked_articles)
+
+        with open("txt_files/linkes_in_links.pkl", "wb") as f4:
+            pickle.dump(links_in_links, f4)
+
+    def on_escape_pressed():
+        print("ESC key pressed")
+        sys.exit()
+
+    def keyboard_listener():
+        keyboard.add_hotkey('esc', on_escape_pressed)
+        keyboard.wait('esc')
+
+
+    if __name__ == "__main__":
+    # Start a thread for keyboard listening
+        keyboard_thread = threading.Thread(target=keyboard_listener)
+        keyboard_thread.start()
+
+        # customtkinter window 
+        root = customtkinter.CTk()  # create window 
+
+        entry = customtkinter.CTkEntry(root, placeholder_text="Which article do you wanna search?", width=225, height=15)  # define Entry for Article search
+        entry.pack()
+        
+        search_btn = customtkinter.CTkButton(root, text="search", command=search_btn_clicked)  # define search btn
+        search_btn.pack()
+
+        root.mainloop()
+
+        # After the main loop ends, join the keyboard thread to ensure proper termination
+        keyboard_thread.join()
+            
