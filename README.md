@@ -21,13 +21,13 @@ Zusätzliche Funktionalitäten
 
 g)	Suchfeld für dynamische Suche nach neuen Artikeln (ohne es im Code anzupassen) ✅
 
-h)	Verbunden Artikel wieder untereinander verbinden ?
+h)	Verbunden Artikel wieder untereinander verbinden ? ✅
 
 i)	Speicherung als Bild (SVG?) ✅
 
 Unspezifische Grundanforderungen 
 
-j)	Fehlerhafte Eingaben werden abgefangen und der Benutzer wird aufgefordert, sich zu korrigieren («Ungültige Eingabe, bitte Eingabe nochmals wiederholen») 
+j)	Fehlerhafte Eingaben werden abgefangen und der Benutzer wird aufgefordert, sich zu korrigieren («Ungültige Eingabe, bitte Eingabe nochmals wiederholen») ✅
 
 k)	Das Tool führt das Spiel aus, und kehrt dann wieder zum Menü zurück ✅
 
