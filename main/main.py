@@ -19,12 +19,15 @@ article_to_be_searched = ""
 linked_articles = []
 
 #define functions
-
 def handle_escape():
     def on_esc_press(e):
-        root.destroy()# Destroy the root window
         print("Escape key pressed. Exiting...")
+        print("\n\n\n\n")
+        print("Bye have a good day :)")
+        root.destroy()# Destroy the root window
         
+        
+
     keyboard.on_press_key("esc", on_esc_press) #call the on_esc_press function, when esc is pressed
 
 # Start listening for the Escape key in a separate thread
@@ -66,7 +69,7 @@ def search_btn_clicked():
     # Call the function to save articles to file
     save_articles_to_file()
     # Define the file name for the GUI
-    file_name_gui = "gui_v5.py" #probably have to add main/ or remove the main/
+    file_name_gui = "main/gui_v5.py" #probably have to add main/ or remove the main/
     subprocess.Popen([sys.executable, file_name_gui])
     # Destroy the root window
     root.destroy()
@@ -78,17 +81,17 @@ def save_articles_to_file():
     # Print the links of linked articles
     print(links_of_linked_articles)
     # Write the article title and linked articles to separate text files
-    with io.open("txt_files/article_to_be_searched.txt", "w", encoding="utf8") as f1, io.open("txt_files/linked_articles.txt", "w", encoding="utf8") as f2:
+    with io.open("main/txt_files/article_to_be_searched.txt", "w", encoding="utf8") as f1, io.open("main/txt_files/linked_articles.txt", "w", encoding="utf8") as f2:
         article_data = {"article_to_be_searched": article_to_be_searched, "linked_articles": linked_articles}
         f1.write(article_data["article_to_be_searched"])
         for linked_article in article_data["linked_articles"]:
             f2.write(f"{linked_article}\n")
     # Serialize and write the links of linked articles and duplicate links to separate pickle files
-    with open("txt_files/linked_linked_articles.pkl","wb") as f3:
+    with open("main/txt_files/linked_linked_articles.pkl","wb") as f3:
         pickle.dump(links_of_linked_articles, f3) 
         print("Links in links:", links_of_linked_articles)
 
-    with open("txt_files/linkes_in_links.pkl", "wb") as f4:
+    with open("main/txt_files/linkes_in_links.pkl", "wb") as f4:
         pickle.dump(links_in_links, f4)
 
 def update_hoop_distance(value):
@@ -97,7 +100,7 @@ def update_hoop_distance(value):
     label_var.set(f"Hoop Distance: {hoop_distance:.2f}")
 
 if __name__ == "__main__":
-
+    
     # Create the customtkinter window
     root = customtkinter.CTk()  # create window 
     root.title("Graph Generator")
