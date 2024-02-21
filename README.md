@@ -2,14 +2,14 @@
 Wikipedia Graph Project by Levi Weber and Cedric Kaufmann
 
 Disclaimer bevore using the programm: 
-It could happend that you receive the error, that the files you need to load aren't findable (the directory you trying to open is not existent, or something like that). If this error accurse to you, you need to either remove all the main/ statements from where the files get loaded in, or add the main/ statement into every filepath that gets loaded in. 
+You might receive the error, that the files you need to load aren't findable (the directory you trying to open is not existent). If this error occurs to you, you need to either remove all the main/ statements from where the files get loaded in or add the main/ statement into every file path that gets loaded in. 
 For example:
 with io.open("main/txt_files/article_to_be_searched.txt", "r") as f1: 
-If the error accurse in this state, you need to change it to the following: 
+If the error occurs in this state, you need to change it to the following: 
 with io.open("txt_files/article_to_be_searched.txt", "r") as f1.
-and the other way round.
+and the other way around.
 
-The follwoing lines indicate where to find the loading lines of code in the corresponding file:
+The following lines indicate where to find the loading lines of code in the corresponding file:
 Main.py : 
 - lines: 73, 85, 91, 95
 
@@ -47,8 +47,6 @@ k)	Das Tool führt das Spiel aus, und kehrt dann wieder zum Menü zurück ✅
 l)	Man muss nach der Benutzung des Programms entweder weiterfahren können oder aufhören (z.B. wenn «q» gedrückt wird, endet das Programm) ✅
 
 m)	Beim Beenden des Programms verabschiedet sich dieses und zeigt an, wie lange das Programm benutzt wurde und wie oft welche Funktion verwendet wurde. Finde heraus wie man das mit Python macht. Tip: import time() Funktion time.time(). 😔 nicht geschafft
-
-
  
 Code Qualität
 
