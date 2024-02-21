@@ -22,7 +22,7 @@ def get_important_links(article_title,hopping_distance,currently_hopping):
     global links_in_links
     global links_of_links
     important_links = [] # Initialize list to store important links
-    global top_30_words_only_complete_dictionary
+    global top_x_words_only_complete_dictionary
     linked_articles = get_linked_articles(article_title) # Get linked articles
     backlinks = get_backlinks(article_title) # Get backlinks
     navbox_titles = get_all_navbox_titles(article_title) # Get titles from navbox
@@ -57,7 +57,7 @@ def get_important_links(article_title,hopping_distance,currently_hopping):
             relevance[important_article]=relevance_number
 
     # Sorting the dictionary based on values in descending order
-    sorted_words = sorted(relevance.items(), key=lambda x: x[1], reverse=True) #ATTTENTION HAS TO BE EXPLAINED IN DETAIL
+    sorted_words = sorted(relevance.items(), key=lambda x: x[1], reverse=True) #makes a lambda function (key=lamda...), gets specifies that sorting should be based on the second element (index1) of each tuple (lambda gets x as argumetn and returns x[1])
 
     # Selecting the top number of words specified in the article_count value
     article_count = 3
@@ -86,8 +86,8 @@ def get_linked_articles(article_title):
         'prop': 'links', # Property to retrieve links
         'format': 'json', # Response format
         'pllimit': 500, # Maximum number of links
-        'plgenerator': 'allpages', #EXPLAAAAIN
-        'gaplimit': 500, #EXPLAIIIN
+        'plgenerator': 'allpages', # Generator parameter specifying to retrieve links from all pages
+        'gaplimit': 500, # Maximum number of pages to generate links from
     }
 
     global linked_articles
@@ -171,9 +171,12 @@ def get_article_text(article_title):
         data = response.json()
 
         # Extract the text content of the article
-        #EXPLAIIIIIN    
-        page_id = next(iter(data['query']['pages'].keys()))
-        article_text = data['query']['pages'][page_id].get('extract', 'No extract available')
+
+        # Extract the page ID of the article. 
+        page_id = next(iter(data['query']['pages'].keys()))  #.keys() retrieves the page IDs of the pages dictionary (are the keys), iter() creates iterary, allows us to loop over the key one by one, next() always retrieves the next elment from the iterator 
+
+        # Extract the text content of the article based on the page ID obtained earlier.
+        article_text = data['query']['pages'][page_id].get('extract', 'No extract available') #if extract not available it returns: "No extract available"
 
         return article_text
 
@@ -193,7 +196,7 @@ def get_all_navbox_titles(article_title):
     # Extract article titles from all navboxes
     titles = []
     for navbox in navboxes:
-        for link in navbox.find_all("a", href=re.compile(r"/wiki/")):
+        for link in navbox.find_all("a", href=re.compile(r"/wiki/")): #Finds all "a" (anchor tags) within navbox section, filter based on the "href" attribute that contains substring "/wiki/"
             title = link.get("title")
             if title:
                 titles.append(title)
@@ -205,14 +208,14 @@ def find_duplicate_values(data):
     value_keys = {}  # Dictionary to store keys associated with each value
 
     # Populate value_keys
-    for key, (values, _) in data.items():
+    for key, (values, _) in data.items(): #ignore everything except the values
         for value in values:
             if value in value_keys:
-                value_keys[value].append(key)
+                value_keys[value].append(key) #we append the key because we later want to make an edge between the "parent" article
             else:
                 value_keys[value] = [key]
 
     # Filter out duplicates
-    duplicate_pairs = {value: keys for value, keys in value_keys.items() if len(keys) > 1}
+    duplicate_pairs = {value: keys for value, keys in value_keys.items() if len(keys) > 1} #iterates over each item in value_key.items() (is a tuple) checks if multiple keys are associated with the same value
 
     return duplicate_pairs
