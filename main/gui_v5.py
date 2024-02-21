@@ -3,18 +3,34 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
-import math
+import subprocess
+import threading
+import keyboard 
+import io
+import sys
+
+# Define the function to handle the Escape key press
+def handle_escape():
+    def on_esc_press(e):
+        plt.close('all')  # Close all matplotlib windows
+        print("Escape key pressed. Exiting...")
+        subprocess.Popen([sys.executable, "main/main.py"]) #opens the main file again, to start over
+        
+    keyboard.on_press_key("esc", on_esc_press) #call the on_esc_press function, when esc is pressed
+
+# Start listening for the Escape key in a separate thread
+threading.Thread(target=handle_escape).start()
 
 # Load all the necessary information from the files
-with open("txt_files/article_to_be_searched.txt", "r") as f1:  # Load central topic
+with io.open("main/txt_files/article_to_be_searched.txt", "r") as f1:  # Load central topic
     central_topic = f1.read().strip()
-with open("txt_files/linked_linked_articles.pkl", "rb") as f2:  # Load how to link the stuff
+with open("main/txt_files/linked_linked_articles.pkl", "rb") as f2:  # Load how to link the stuff
     links_of_linked_articles = pickle.load(f2)
     print(links_of_linked_articles)
-with open("txt_files/linked_articles.txt", "r") as f3:  # Read the related topics from linked_articles.txt and remove any empty lines
+with io.open("main/txt_files/linked_articles.txt", "r") as f3:  # Read the related topics from linked_articles.txt and remove any empty lines
     related_topics_raw = [line.strip() for line in f3]
     important = [topic for topic in related_topics_raw if topic]
-with open("txt_files/linkes_in_links.pkl","rb") as f4:
+with open("main/txt_files/linkes_in_links.pkl","rb") as f4:
     links_in_links=pickle.load(f4)
 
 # Create a directed graph
@@ -67,11 +83,11 @@ def adjust_node_positions(pos, tol=0.01):
                 adjusted_pos[node2] = (x2 + np.random.normal(0.5,0.5), y2 + np.random.normal(0.5, 0.5))
     return adjusted_pos
 
-# Adjust node positions if necessary
 pos_adjusted = adjust_node_positions(pos)
 
 # Draw the graph with adjusted node positions
 plt.figure(figsize=(10, 8))
 nx.draw(G, pos_adjusted, with_labels=True, node_size=node_sizes, node_color=colors, font_size=10, font_weight='bold',)
 plt.title("Wikipedia Article Network")
+plt.savefig("main/graphs_folder/current_graph", dpi=500)
 plt.show()

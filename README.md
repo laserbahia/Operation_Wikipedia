@@ -23,15 +23,15 @@ g)	Suchfeld für dynamische Suche nach neuen Artikeln (ohne es im Code anzupasse
 
 h)	Verbunden Artikel wieder untereinander verbinden ?
 
-i)	Speicherung als Bild (SVG?)
+i)	Speicherung als Bild (SVG?) ✅
 
 Unspezifische Grundanforderungen 
 
-j)	Fehlerhafte Eingaben werden abgefangen und der Benutzer wird aufgefordert, sich zu korrigieren («Ungültige Eingabe, bitte Eingabe nochmals wiederholen»)
+j)	Fehlerhafte Eingaben werden abgefangen und der Benutzer wird aufgefordert, sich zu korrigieren («Ungültige Eingabe, bitte Eingabe nochmals wiederholen») 
 
-k)	Das Tool führt das Spiel aus, und kehrt dann wieder zum Menü zurück
+k)	Das Tool führt das Spiel aus, und kehrt dann wieder zum Menü zurück ✅
 
-l)	Man muss nach der Benutzung des Programms entweder weiterfahren können oder aufhören (z.B. wenn «q» gedrückt wird, endet das Programm) 
+l)	Man muss nach der Benutzung des Programms entweder weiterfahren können oder aufhören (z.B. wenn «q» gedrückt wird, endet das Programm) ✅
 
 m)	Beim Beenden des Programms verabschiedet sich dieses und zeigt an, wie lange das Programm benutzt wurde und wie oft welche Funktion verwendet wurde. Finde heraus wie man das mit Python macht. Tip: import time() Funktion time.time().
 
