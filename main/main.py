@@ -24,6 +24,7 @@ def handle_escape():
         print("Escape key pressed. Exiting...")
         print("\n\n\n\n")
         print("Bye have a good day :)")
+        print("for a time reference, look further down in the terminal")
         root.destroy()# Destroy the root window
         
         
